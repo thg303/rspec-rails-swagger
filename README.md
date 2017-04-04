@@ -107,6 +107,42 @@ RSpec.describe "Posts Controller", type: :request do
       response 200, description: "success"
     end
   end
+
+  # Path Update Object
+  path '/posts/{post_id}' do
+    # Parameter Object for header
+    parameter 'Content-Type', {in: :header, type: :string}
+    let(:'Content-Type') { 'application/json' }
+	# ^same can be used for *Authorization* header
+	
+    # Parameter Object
+    parameter "post_id", {in: :path, type: :integer}
+    let(:post_id) { 1 }
+    
+    # Parameter Object for Body
+    parameter "body", {in: :body, required: true, schema: {
+	    consumes: 'application/json',
+	    type: :object,
+	    properties: {
+		    title: { type: :string },
+		    author_email: { type: :email }
+	    }
+    }
+    let (:body) {
+	    { post: 
+		    { title: 'my example', 
+		    author_email: 'me@example.com' } 
+	    }
+	}
+	# checkout http://swagger.io/specification/#parameter-object-44 for more information, options and details
+
+    # Operation Object
+    put summary: "update an item" do
+      # Response Object
+      response 200, description: "success"
+    end
+    # ...
+end
 ```
 
 
